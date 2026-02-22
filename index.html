@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ayaan | Digital Architect</title>
+  
+  <!-- Typography & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #6366f1;
+      --secondary: #a855f7;
+      --accent: #22d3ee;
+      --bg-dark: #0b0f1a;
+      --bg-card: rgba(23, 32, 53, 0.8);
+      --text-main: #ffffff;
+      --text-dim: #94a3b8;
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* --- Animation Base States --- */
+    .reveal-left { opacity: 0; transform: translateX(-80px); transition: var(--transition); }
+    .reveal-right { opacity: 0; transform: translateX(80px); transition: var(--transition); }
+    .reveal-up { opacity: 0; transform: translateY(50px); transition: var(--transition); }
+    
+    .active { opacity: 1 !important; transform: translate(0, 0) !important; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    /* --- Navigation --- */
+    header {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(11, 15, 26, 0.8);
+      backdrop-filter: blur(15px);
+      z-index: 1000;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    nav { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .logo { font-size: 1.6rem; font-weight: 800; }
+    .logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: var(--text-dim); font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+    .nav-links a:hover { color: var(--primary); }
+
+    /* --- Hero --- */
+    .hero {
+      padding: 160px 0 100px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-text h2 {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-text h2 span {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; margin-top: 2rem; }
+    
+    .btn {
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-p { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+    .btn-s { border: 1px solid var(--glass-border); color: white; background: rgba(255,255,255,0.03); }
+
+    /* --- Profile Image Morph --- */
+    .image-container { position: relative; }
+    .blob {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      animation: morph 8s ease-in-out infinite;
+      overflow: hidden;
+      border: 4px solid var(--glass-border);
+    }
+
+    @keyframes morph {
+      0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+      50% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
+      100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+    }
+
+    .blob img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* --- Sections --- */
+    section { padding: 100px 0; }
+    .sec-title { text-align: center; margin-bottom: 4rem; }
+    .sec-title h2 { font-size: 2.5rem; font-weight: 800; }
+    .line { width: 50px; height: 4px; background: var(--primary); margin: 10px auto; border-radius: 10px; }
+
+    /* --- Skills & Projects --- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    
+    .card {
+      background: var(--bg-card);
+      padding: 2.5rem;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      transition: var(--transition);
+    }
+
+    .card:hover { 
+      transform: translateY(-10px) !important; 
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    .card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 1.5rem; }
+
+    /* --- Contact --- */
+    .contact-box {
+      background: linear-gradient(135deg, #1e1b4b, #2e1065);
+      padding: 4rem;
+      border-radius: 30px;
+      text-align: center;
+      border: 1px solid var(--glass-border);
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero-btns { justify-content: center; }
+      .hero-image { order: -1; max-width: 300px; margin: 0 auto; }
+      .nav-links { display: none; }
+    }
+    .top{
+      background-color: #46297b;
+      font-family: Sans-Serif;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav class="container">
+      <h1 class="logo">Ayaan<span>.</span></h1>
+      <div class="nav-links">
+        <a href="#About">About</a>
+        <a href="#Skills">Skills</a>
+        <a href="#Projects">Projects</a>
+        <a href="#Contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero container">
+    <div class="hero-grid">
+<!--       <div class="top">Young Innavator</div> -->
+      <div class="hero-text reveal-left">
+        <h2>Coding the <br><span>Future</span> at 13.</h2>
+        <p>I build intelligent AI systems, immersive games, and sleek web experiences. Combining logic with creativity to push digital boundaries.</p>
+        <div class="hero-btns">
+          <a href="#Projects" class="btn btn-p">See My Work</a>
+          <a href="#Contact" class="btn btn-s">Let's Talk</a>
+        </div>
+      </div>
+      <div class="hero-image reveal-right">
+        <div class="blob"><img src="assets/profile.jpg" alt="Ayaan">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="About" class="container">
+    <div class="sec-title reveal-up">
+      <h2>About Me</h2>
+      <div class="line"></div>
+    </div>
+    <div class="contact-box reveal-up">
+      <p style="font-size: 1.2rem; color: var(--text-dim); max-width: 800px; margin: 0 auto;">
+        I’m Ayaan, a developer who started early because I couldn’t wait to build things. 
+        I specialize in bridging the gap between design and functionality in Web Development, 
+        Game Engines, and Python-driven AI.
+      </p>
+      <br>
+      <a href="assets/Ayaan_Resume.pdf" download class="btn btn-p">Download Resume</a>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="Skills" class="container">
+    <div class="sec-title reveal-up">
+      <h2>Technical Arsenal</h2>
+      <div class="line"></div>
+    </div>
+    <div class="grid">
+      <div class="card reveal-left">
+        <i class="fas fa-layer-group"></i>
+        <h3>Fullstack Web</h3>
+        <p>Building responsive, modern websites using the latest frameworks.</p>
+      </div>
+      <div class="card reveal-up">
+        <i class="fas fa-brain"></i>
+        <h3>AI Development</h3>
+        <p>Designing neural networks and smart assistants using Python.</p>
+      </div>
+      <div class="card reveal-right">
+        <i class="fas fa-gamepad"></i>
+        <h3>Game Design</h3>
+        <p>Creating interactive 2D/3D worlds with physics and logic.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="Projects" class="container">
+    <div class="sec-title reveal-up">
+      <h2>Recent Ventures</h2>
+      <div class="line"></div>
+    </div>
+    <div class="grid">
+      <!-- Staggered Entry: Left, Up, Right -->
+      <div class="card reveal-left">
+        <i class="fas fa-robot"></i>
+        <h3>Cosmo AI</h3>
+        <p>A smart NLP-based chatbot that manages web interactions.</p>
+      </div>
+      <div class="card reveal-right">
+        <i class="fas fa-gamepad"></i>
+        <a href="https://github.com/ayaans-creations/2D-space-Shooter">
+        <h3>2D Space Shooter</h3>
+        <p>A python based 2D Space Shooter game using pygame; It builds curosity</p>
+      </div></a>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="Contact" class="container">
+    <div class="contact-box reveal-up">
+      <h2>Ready to start a project?</h2>
+      <p>I'm currently available for freelance work and collaborations.</p>
+      <div class="hero-btns" style="justify-content: center;">
+        <!-- Is tarah likhne se user ko email dikhega bhi -->
+<a onclick="copyEmail()" class="btn btn-p">
+    <i class="fas fa-envelope"></i> Email me
+</a>
+        <a href="https://github.com/ayaans-creations" class="btn btn-s">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="text-align: center; padding: 4rem; color: var(--text-dim); border-top: 1px solid var(--glass-border);">
+    <p>© 2025 Ayaan | Developed with precision.</p>
+  </footer>
+  <script>
+function copyEmail() {
+  const email = "creationswithayaan@gmail.com";
+  navigator.clipboard.writeText(email);
+  // alert("Email copied to clipboard!");
+}
+</script>
+  <script>
+    // Intersection Observer for Scroll Animations
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          // Once animated, no need to track it anymore
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Track all elements with reveal classes
+    document.querySelectorAll('.reveal-left, .reveal-right, .reveal-up').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
